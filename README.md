@@ -143,5 +143,5 @@ Python · FastAPI · Uvicorn · httpx · Streamlit · Pandas · pytest
 
 ## Author
 
-**Mohraeil Alqommos (Makar)**: cybersecurity student and penetration tester focused on web, mobile and AI security.
+**Mohraeil Asaad**: cybersecurity student and penetration tester focused on web, mobile and AI security.
 GitHub: [Mohra-Makar](https://github.com/Mohra-Makar)
