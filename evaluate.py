@@ -1,6 +1,6 @@
 """Compare the original detector (v0) with the new one on dataset.csv.
 
-Usage: python evaluate.py [--split dev|holdout|all] [--verbose]
+Usage: python evaluate.py [--split dev|holdout|dev_ar|holdout_ar|all] [--verbose]
 """
 import argparse
 import csv
@@ -47,7 +47,7 @@ def metrics(rows, predict):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--split", default="all", choices=["dev", "holdout", "all"])
+    ap.add_argument("--split", default="all", choices=["dev", "holdout", "dev_ar", "holdout_ar", "all"])
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args()
 

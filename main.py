@@ -19,6 +19,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from detector import analyze, analyze_prompt_security  # noqa: F401  (tuple API kept for compatibility)
+from sensitive import redact
 
 app = FastAPI(title="SpellCheck AI Gateway")
 
@@ -99,9 +100,10 @@ async def proxy_llm(request: Request):
 
     user_prompt = extract_scannable_text(body.get("messages", []))
     result = analyze(user_prompt)
+    safe_prompt = redact(user_prompt)[0]  # never write secrets or card numbers to the audit log
 
     if result.blocked:
-        log_event(user_prompt, "blocked", result.reason, result.threat_level)
+        log_event(safe_prompt, "blocked", result.reason, result.threat_level)
         return JSONResponse(
             {"status": "blocked",
              "message": f"Request blocked: {result.reason}.",
@@ -113,7 +115,7 @@ async def proxy_llm(request: Request):
             status_code=403,
         )
 
-    log_event(user_prompt, "passed", "Clean Prompt", "LOW")
+    log_event(safe_prompt, "passed", "Clean Prompt", "LOW")
 
     upstream = os.getenv("UPSTREAM_URL")
     if not upstream:
